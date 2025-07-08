@@ -89,7 +89,9 @@ export class AuthService {
 
     async fullfillAuth() {
 
-        const usuarios = await this.userRepo.findAll()
+        let usuarios = await this.userRepo.findAll()
+
+        usuarios = usuarios.filter(usuario => usuario.id?.length! > 0);
 
         for (let usuario of usuarios) {
             const datos = {
@@ -101,14 +103,7 @@ export class AuthService {
                 activo: usuario.activo,
 
             }
-            if (usuario.id === '') {
-                console.log(usuario)
-            } else {
-                let us = await this.authRepo.create(datos)
-                const ids = Object.keys(us)
-                let user_data = us[ids[0]];
-                await this.authRepo.updateOne(usuario.id, datos)
-            }
+            await this.authRepo.updateOne(usuario.id, datos)
         }
     }
 
