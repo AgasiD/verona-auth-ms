@@ -29,7 +29,7 @@ export class AuthService {
 
     async cambiarPassword({ usuarioId, password, newpass }) {
         let usuario = (await this.authRepo.findOne(usuarioId))!;
-        usuario.password = await encriptarPassword(newpass);
+        usuario.password = newpass //await encriptarPassword(newpass);
         await this.authRepo.updateOne(usuarioId, usuario);
 
         return {
